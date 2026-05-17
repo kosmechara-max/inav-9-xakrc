@@ -1,0 +1,30 @@
+name: Build Custom INAV 9
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    - name: Install ARM GNU Toolchain
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi make cmake ninja-build
+
+    - name: Compile SPEEDYBEEF405WING
+      run: |
+        mkdir -p build
+        cd build
+        cmake -DTARGET=SPEEDYBEEF405WING ..
+        make -j$(nproc)
+
+    - name: Upload Hex Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: inav-9.0.1-custom-xakrc
+        path: build/bin/inav_*.hex
