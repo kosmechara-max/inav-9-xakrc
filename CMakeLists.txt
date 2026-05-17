@@ -1,0 +1,2 @@
+target_stm32f405xg(SPEEDYBEEF405WING)
+drivers/gyro/gyro_lsm6dxx.c
